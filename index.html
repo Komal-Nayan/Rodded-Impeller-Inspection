@@ -1,0 +1,372 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>WEIR SOP – Digital Form</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #6f76ff;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 6px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background: #eef1ff;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn {
+            background: #6f76ff;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background: #5c63e0;
+            }
+
+        .center {
+            text-align: center;
+        }
+
+        .logo-img {
+            height: 28px; 
+            width: auto;
+            max-width: 160px; 
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div class="logo">
+                    <img src="Images/FILLED_PNG_WHITE.png"
+                         alt="WEIR Logo"
+                         class="logo-img" />
+                </div>
+                <div>Template Visual Work Instruction (SOP)</div>
+            </div>
+            
+
+            <!-- BASIC INFORMATION -->
+            <div class="card">
+                <h3>Basic Information</h3>
+                <div class="grid">
+                    <div><label>Operation</label><input name="operation"></div>
+                    <div><label>Department</label><input name="department"></div>
+                    <div><label>Part Description</label><input name="part_description"></div>
+                    <div><label>Part #</label><input name="part_no"></div>
+
+                    <div><label>Customer</label><input name="customer"></div>
+                    <div><label>Impeller Date Code</label><input name="date_code"></div>
+                    <div><label>Customer Part #</label><input name="customer_part_no"></div>
+                    <div><label>Production #</label><input name="production_no"></div>
+                </div>
+            </div>
+
+            <!-- CHECKLIST -->
+            <div class="card">
+                <h3>Checklist</h3>
+                <table>
+                    <tr>
+                        <th class="left">Task</th>
+                        <th>Inspector Initial & Date</th>
+                    </tr>
+                    <tr><td class="left">Inspect holes for cleanliness – 100% carbon & residue free</td><td><input></td></tr>
+                    <tr><td class="left">Measurements of tungsten rods recorded</td><td><input></td></tr>
+                    <tr><td class="left">Hole measurement using bore gauge & tape</td><td><input></td></tr>
+                    <tr><td class="left">Fit check with both gauges</td><td><input></td></tr>
+                    <tr><td class="left">Hole dia – Rod dia ≥0.5 mm and &lt;1 mm</td><td><input></td></tr>
+                    <tr><td class="left">Threaded inserts test-fit in every hole</td><td><input></td></tr>
+                    <tr><td class="left">Review gluing procedure</td><td><input></td></tr>
+                </table>
+            </div>
+
+            <!-- HOLE DIMENSIONS -->
+            <div class="card">
+                <h3>Impeller Hole Dimensions</h3>
+
+                <p><b>Tolerance:</b> 46.0 – 46.6 mm</p>
+
+                <table>
+                    <tr>
+                        <th>Hole #</th>
+                        <th>Top</th>
+                        <th>Middle</th>
+                        <th>Bottom</th>
+                        <th>Shim</th>
+                        <th>Hole Center<br>(390 / 395 / N/A)</th>
+                    </tr>
+
+                    <tr>
+                        <td>1‑1</td>
+                        <td><input name="hole_1_1_top"></td>
+                        <td><input name="hole_1_1_mid"></td>
+                        <td><input name="hole_1_1_bottom"></td>
+                        <td><input name="hole_1_1_shim"></td>
+                        <td><input name="hole_1_1_center"></td>
+                    </tr>
+
+                    <tr>
+                        <td>1‑2</td>
+                        <td><input name="hole_1_2_top"></td>
+                        <td><input name="hole_1_2_mid"></td>
+                        <td><input name="hole_1_2_bottom"></td>
+                        <td><input name="hole_1_2_shim"></td>
+                        <td><input name="hole_1_2_center"></td>
+                    </tr>
+
+                    <tr>
+                        <td>1‑3</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>2‑1</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>2‑2</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>2‑3</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>3‑1</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>3‑2</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>3‑3</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>4‑1</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>4‑2</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+
+                    <tr>
+                        <td>4‑3</td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                        <td><input></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ROD DATA -->
+            <div class="card">
+                <h3>Rod Dimensions – MK781340‑PGC813</h3>
+
+                <p>
+                    <b>Diameter:</b> 44.3 – 44.7 mm &nbsp;&nbsp;
+                    <b>Length:</b> 347 – 353 mm
+                </p>
+
+                <table>
+                    <tr>
+                        <th>Rod #</th>
+                        <th>Diameter (mm)</th>
+                        <th>Length (mm)</th>
+                    </tr>
+
+                    <tr><td>Rod 1</td><td><input name="rod_1_dia"></td><td><input name="rod_1_len"></td></tr>
+                    <tr><td>Rod 2</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 3</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 4</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 5</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 6</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 7</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 8</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 9</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 10</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 11</td><td><input></td><td><input></td></tr>
+                    <tr><td>Rod 12</td><td><input></td><td><input></td></tr>
+                </table>
+            </div>
+
+            <!-- PLUG DATA -->
+            <div class="card">
+                <h3>Plug Data – MK782670A05</h3>
+
+                <table>
+                    <tr>
+                        <th>No.</th>
+                        <th>Plug Thread Length (85 mm)</th>
+                        <th>Rod + Plug Thread</th>
+                        <th>Plug Length (112 mm)</th>
+                        <th>Rod + Plug</th>
+                    </tr>
+
+                    <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>4</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>5</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>6</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>7</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>8</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>9</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>10</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <tr><td>11</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                </table>
+            </div>
+
+            <!-- SIGN OFF -->
+            <div class="card">
+                <h3>Sign‑off</h3>
+                <div class="grid">
+                    <div><label>Inspected By</label><input></div>
+                    <div><label>Work Performed By</label><input></div>
+                    <div><label>Signature</label><input></div>
+                    <div><label>Date</label><input type="date"></div>
+                </div>
+            </div>
+
+            <div class="center">
+                <button class="btn" type="submit">Submit SOP</button>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
