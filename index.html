@@ -3,123 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>WEIR SOP – Digital Form</title>
-
-    <style>
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #6f76ff;
-            color: white;
-            padding: 14px 20px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-
-        h3 {
-            margin-top: 0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        label {
-            font-size: 12px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 6px;
-            font-size: 13px;
-            box-sizing: border-box;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 6px;
-            text-align: center;
-        }
-
-        th {
-            background: #eef1ff;
-        }
-
-        .left {
-            text-align: left;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        .btn {
-            background: #6f76ff;
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-            .btn:hover {
-                background: #5c63e0;
-            }
-
-        .center {
-            text-align: center;
-        }
-
-        .logo-img {
-            height: 28px; 
-            width: auto;
-            max-width: 160px; 
-            object-fit: contain;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
 </head>
 
 <body>
-    <form>
-
+    <form method="post">
         <div class="container">
 
             <!-- HEADER -->
@@ -131,18 +19,34 @@
                 </div>
                 <div>Template Visual Work Instruction (SOP)</div>
             </div>
-            
 
             <!-- BASIC INFORMATION -->
             <div class="card">
                 <h3>Basic Information</h3>
                 <div class="grid">
-                    <div><label>Operation</label><input name="operation"></div>
-                    <div><label>Department</label><input name="department"></div>
+                    <div><label>Operation</label><input name="operation" required></div>
+                    <div><label>Department</label><input name="department" required></div>
                     <div><label>Part Description</label><input name="part_description"></div>
-                    <div><label>Part #</label><input name="part_no"></div>
 
-                    <div><label>Customer</label><input name="customer"></div>
+                    <div>
+                        <label>Part #</label>
+                        <select name="part_no" id="partSelect" required>
+                            <option value="">-- Select Part # --</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Customer</label>
+                        <select name="customer" required>
+                            <option value="">-- Select Customer --</option>
+                            <option value="CNRL">CNRL</option>
+                            <option value="CNUL">CNUL</option>
+                            <option value="Imperial Oil">Imperial Oil</option>
+                            <option value="Syncrude">Syncrude</option>
+                            <option value="Suncor">Suncor</option>
+                        </select>
+                    </div>
+
                     <div><label>Impeller Date Code</label><input name="date_code"></div>
                     <div><label>Customer Part #</label><input name="customer_part_no"></div>
                     <div><label>Production #</label><input name="production_no"></div>
@@ -155,23 +59,61 @@
                 <table>
                     <tr>
                         <th class="left">Task</th>
-                        <th>Inspector Initial & Date</th>
+                        <th>Inspector Initial</th>
+                        <th>Date</th>
                     </tr>
-                    <tr><td class="left">Inspect holes for cleanliness – 100% carbon & residue free</td><td><input></td></tr>
-                    <tr><td class="left">Measurements of tungsten rods recorded</td><td><input></td></tr>
-                    <tr><td class="left">Hole measurement using bore gauge & tape</td><td><input></td></tr>
-                    <tr><td class="left">Fit check with both gauges</td><td><input></td></tr>
-                    <tr><td class="left">Hole dia – Rod dia ≥0.5 mm and &lt;1 mm</td><td><input></td></tr>
-                    <tr><td class="left">Threaded inserts test-fit in every hole</td><td><input></td></tr>
-                    <tr><td class="left">Review gluing procedure</td><td><input></td></tr>
+                    <tr>
+                        <td class="left">Inspect holes for cleanliness – 100% carbon &amp; residue free</td>
+                        <td><input name="check_clean_initial"></td>
+                        <td><input type="date" name="check_clean_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Measurements of tungsten rods recorded</td>
+                        <td><input name="check_rods_initial"></td>
+                        <td><input type="date" name="check_rods_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Measurement of holes using bore gauge &amp; measuring tape</td>
+                        <td><input name="check_holes_initial"></td>
+                        <td><input type="date" name="check_holes_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Holes Checked with Go and No-Go Gauge</td>
+                        <td><input name="check_fit_initial"></td>
+                        <td><input type="date" name="check_fit_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Hole diameter minus (–) Rod diameter &gt;0.5 mm and &lt;1 mm</td>
+                        <td><input name="check_diff_initial"></td>
+                        <td><input type="date" name="check_diff_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Test fit threaded inserts in every hole</td>
+                        <td><input name="check_insert_initial"></td>
+                        <td><input type="date" name="check_insert_date"></td>
+                    </tr>
+                    <tr>
+                        <td class="left">Review procedure for gluing</td>
+                        <td><input name="check_glue_initial"></td>
+                        <td><input type="date" name="check_glue_date"></td>
+                    </tr>
                 </table>
             </div>
 
-            <!-- HOLE DIMENSIONS -->
+            <!-- ADDITIONAL DETAILS -->
+            <div class="card">
+                <h3>Additional Details</h3>
+                <div class="image-container">
+                    <img src="./images/rodded impeller.png"
+                         alt="Rodded Impeller Reference"
+                         class="detail-img" />
+                </div>
+            </div>
+
+            <!-- IMPELLER HOLE DIMENSIONS -->
             <div class="card">
                 <h3>Impeller Hole Dimensions</h3>
-
-                <p><b>Tolerance:</b> 46.0 – 46.6 mm</p>
+                <p id="toleranceText"><b>Tolerance:</b> —</p>
 
                 <table>
                     <tr>
@@ -180,154 +122,147 @@
                         <th>Middle</th>
                         <th>Bottom</th>
                         <th>Shim</th>
-                        <th>Hole Center<br>(390 / 395 / N/A)</th>
+                        <th>Hole Center</th>
                     </tr>
 
-                    <tr>
+                    <!-- 4 VANES × 3 HOLES (MAX PATTERN, JS HIDES EXCESS) -->
+                    <!-- Vane 1 -->
+                    <tr class="hole-row" data-vane="1" data-hole="1">
                         <td>1‑1</td>
                         <td><input name="hole_1_1_top"></td>
                         <td><input name="hole_1_1_mid"></td>
                         <td><input name="hole_1_1_bottom"></td>
                         <td><input name="hole_1_1_shim"></td>
-                        <td><input name="hole_1_1_center"></td>
+                        <td><select name="hole_1_1_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="1" data-hole="2">
                         <td>1‑2</td>
                         <td><input name="hole_1_2_top"></td>
                         <td><input name="hole_1_2_mid"></td>
                         <td><input name="hole_1_2_bottom"></td>
                         <td><input name="hole_1_2_shim"></td>
-                        <td><input name="hole_1_2_center"></td>
+                        <td><select name="hole_1_2_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="1" data-hole="3">
                         <td>1‑3</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_1_3_top"></td>
+                        <td><input name="hole_1_3_mid"></td>
+                        <td><input name="hole_1_3_bottom"></td>
+                        <td><input name="hole_1_3_shim"></td>
+                        <td><select name="hole_1_3_center" class="hole-center"></select></td>
                     </tr>
 
-                    <tr>
+                    <!-- Vane 2 -->
+                    <tr class="hole-row" data-vane="2" data-hole="1">
                         <td>2‑1</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_2_1_top"></td>
+                        <td><input name="hole_2_1_mid"></td>
+                        <td><input name="hole_2_1_bottom"></td>
+                        <td><input name="hole_2_1_shim"></td>
+                        <td><select name="hole_2_1_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="2" data-hole="2">
                         <td>2‑2</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_2_2_top"></td>
+                        <td><input name="hole_2_2_mid"></td>
+                        <td><input name="hole_2_2_bottom"></td>
+                        <td><input name="hole_2_2_shim"></td>
+                        <td><select name="hole_2_2_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="2" data-hole="3">
                         <td>2‑3</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_2_3_top"></td>
+                        <td><input name="hole_2_3_mid"></td>
+                        <td><input name="hole_2_3_bottom"></td>
+                        <td><input name="hole_2_3_shim"></td>
+                        <td><select name="hole_2_3_center" class="hole-center"></select></td>
                     </tr>
 
-                    <tr>
+                    <!-- Vane 3 -->
+                    <tr class="hole-row" data-vane="3" data-hole="1">
                         <td>3‑1</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_3_1_top"></td>
+                        <td><input name="hole_3_1_mid"></td>
+                        <td><input name="hole_3_1_bottom"></td>
+                        <td><input name="hole_3_1_shim"></td>
+                        <td><select name="hole_3_1_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="3" data-hole="2">
                         <td>3‑2</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_3_2_top"></td>
+                        <td><input name="hole_3_2_mid"></td>
+                        <td><input name="hole_3_2_bottom"></td>
+                        <td><input name="hole_3_2_shim"></td>
+                        <td><select name="hole_3_2_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="3" data-hole="3">
                         <td>3‑3</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_3_3_top"></td>
+                        <td><input name="hole_3_3_mid"></td>
+                        <td><input name="hole_3_3_bottom"></td>
+                        <td><input name="hole_3_3_shim"></td>
+                        <td><select name="hole_3_3_center" class="hole-center"></select></td>
                     </tr>
 
-                    <tr>
+                    <!-- Vane 4 -->
+                    <tr class="hole-row" data-vane="4" data-hole="1">
                         <td>4‑1</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_4_1_top"></td>
+                        <td><input name="hole_4_1_mid"></td>
+                        <td><input name="hole_4_1_bottom"></td>
+                        <td><input name="hole_4_1_shim"></td>
+                        <td><select name="hole_4_1_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="4" data-hole="2">
                         <td>4‑2</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_4_2_top"></td>
+                        <td><input name="hole_4_2_mid"></td>
+                        <td><input name="hole_4_2_bottom"></td>
+                        <td><input name="hole_4_2_shim"></td>
+                        <td><select name="hole_4_2_center" class="hole-center"></select></td>
                     </tr>
-
-                    <tr>
+                    <tr class="hole-row" data-vane="4" data-hole="3">
                         <td>4‑3</td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
-                        <td><input></td>
+                        <td><input name="hole_4_3_top"></td>
+                        <td><input name="hole_4_3_mid"></td>
+                        <td><input name="hole_4_3_bottom"></td>
+                        <td><input name="hole_4_3_shim"></td>
+                        <td><select name="hole_4_3_center" class="hole-center"></select></td>
                     </tr>
                 </table>
             </div>
 
             <!-- ROD DATA -->
             <div class="card">
-                <h3>Rod Dimensions – MK781340‑PGC813</h3>
-
-                <p>
-                    <b>Diameter:</b> 44.3 – 44.7 mm &nbsp;&nbsp;
-                    <b>Length:</b> 347 – 353 mm
+                <h3>Rod Dimensions</h3>
+                <p id="rodSummary">
+                    <b>Diameter:</b> — &nbsp;&nbsp;
+                    <b>Length:</b> —
                 </p>
-
                 <table>
                     <tr>
                         <th>Rod #</th>
                         <th>Diameter (mm)</th>
                         <th>Length (mm)</th>
                     </tr>
-
-                    <tr><td>Rod 1</td><td><input name="rod_1_dia"></td><td><input name="rod_1_len"></td></tr>
-                    <tr><td>Rod 2</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 3</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 4</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 5</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 6</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 7</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 8</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 9</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 10</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 11</td><td><input></td><td><input></td></tr>
-                    <tr><td>Rod 12</td><td><input></td><td><input></td></tr>
+                    <tr class="rod-row" data-index="1"><td>Rod 1</td><td><input name="rod_1_dia"></td><td><input name="rod_1_len"></td></tr>
+                    <tr class="rod-row" data-index="2"><td>Rod 2</td><td><input name="rod_2_dia"></td><td><input name="rod_2_len"></td></tr>
+                    <tr class="rod-row" data-index="3"><td>Rod 3</td><td><input name="rod_3_dia"></td><td><input name="rod_3_len"></td></tr>
+                    <tr class="rod-row" data-index="4"><td>Rod 4</td><td><input name="rod_4_dia"></td><td><input name="rod_4_len"></td></tr>
+                    <tr class="rod-row" data-index="5"><td>Rod 5</td><td><input name="rod_5_dia"></td><td><input name="rod_5_len"></td></tr>
+                    <tr class="rod-row" data-index="6"><td>Rod 6</td><td><input name="rod_6_dia"></td><td><input name="rod_6_len"></td></tr>
+                    <tr class="rod-row" data-index="7"><td>Rod 7</td><td><input name="rod_7_dia"></td><td><input name="rod_7_len"></td></tr>
+                    <tr class="rod-row" data-index="8"><td>Rod 8</td><td><input name="rod_8_dia"></td><td><input name="rod_8_len"></td></tr>
+                    <tr class="rod-row" data-index="9"><td>Rod 9</td><td><input name="rod_9_dia"></td><td><input name="rod_9_len"></td></tr>
+                    <tr class="rod-row" data-index="10"><td>Rod 10</td><td><input name="rod_10_dia"></td><td><input name="rod_10_len"></td></tr>
+                    <tr class="rod-row" data-index="11"><td>Rod 11</td><td><input name="rod_11_dia"></td><td><input name="rod_11_len"></td></tr>
+                    <tr class="rod-row" data-index="12"><td>Rod 12</td><td><input name="rod_12_dia"></td><td><input name="rod_12_len"></td></tr>
                 </table>
             </div>
 
             <!-- PLUG DATA -->
             <div class="card">
-                <h3>Plug Data – MK782670A05</h3>
-
+                <h3>Plug Data</h3>
                 <table>
                     <tr>
                         <th>No.</th>
@@ -337,17 +272,19 @@
                         <th>Rod + Plug</th>
                     </tr>
 
-                    <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>4</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>5</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>6</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>7</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>8</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>9</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>10</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
-                    <tr><td>11</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+                    <!-- 1–12 -->
+                    <tr class="plug-row" data-index="1"><td>1</td><td><input name="plug_1_thread"></td><td><input name="plug_1_rt"></td><td><input name="plug_1_len"></td><td><input name="plug_1_rp"></td></tr>
+                    <tr class="plug-row" data-index="2"><td>2</td><td><input name="plug_2_thread"></td><td><input name="plug_2_rt"></td><td><input name="plug_2_len"></td><td><input name="plug_2_rp"></td></tr>
+                    <tr class="plug-row" data-index="3"><td>3</td><td><input name="plug_3_thread"></td><td><input name="plug_3_rt"></td><td><input name="plug_3_len"></td><td><input name="plug_3_rp"></td></tr>
+                    <tr class="plug-row" data-index="4"><td>4</td><td><input name="plug_4_thread"></td><td><input name="plug_4_rt"></td><td><input name="plug_4_len"></td><td><input name="plug_4_rp"></td></tr>
+                    <tr class="plug-row" data-index="5"><td>5</td><td><input name="plug_5_thread"></td><td><input name="plug_5_rt"></td><td><input name="plug_5_len"></td><td><input name="plug_5_rp"></td></tr>
+                    <tr class="plug-row" data-index="6"><td>6</td><td><input name="plug_6_thread"></td><td><input name="plug_6_rt"></td><td><input name="plug_6_len"></td><td><input name="plug_6_rp"></td></tr>
+                    <tr class="plug-row" data-index="7"><td>7</td><td><input name="plug_7_thread"></td><td><input name="plug_7_rt"></td><td><input name="plug_7_len"></td><td><input name="plug_7_rp"></td></tr>
+                    <tr class="plug-row" data-index="8"><td>8</td><td><input name="plug_8_thread"></td><td><input name="plug_8_rt"></td><td><input name="plug_8_len"></td><td><input name="plug_8_rp"></td></tr>
+                    <tr class="plug-row" data-index="9"><td>9</td><td><input name="plug_9_thread"></td><td><input name="plug_9_rt"></td><td><input name="plug_9_len"></td><td><input name="plug_9_rp"></td></tr>
+                    <tr class="plug-row" data-index="10"><td>10</td><td><input name="plug_10_thread"></td><td><input name="plug_10_rt"></td><td><input name="plug_10_len"></td><td><input name="plug_10_rp"></td></tr>
+                    <tr class="plug-row" data-index="11"><td>11</td><td><input name="plug_11_thread"></td><td><input name="plug_11_rt"></td><td><input name="plug_11_len"></td><td><input name="plug_11_rp"></td></tr>
+                    <tr class="plug-row" data-index="12"><td>12</td><td><input name="plug_12_thread"></td><td><input name="plug_12_rt"></td><td><input name="plug_12_len"></td><td><input name="plug_12_rp"></td></tr>
                 </table>
             </div>
 
@@ -355,18 +292,20 @@
             <div class="card">
                 <h3>Sign‑off</h3>
                 <div class="grid">
-                    <div><label>Inspected By</label><input></div>
-                    <div><label>Work Performed By</label><input></div>
-                    <div><label>Signature</label><input></div>
-                    <div><label>Date</label><input type="date"></div>
+                    <div><label>Inspected By</label><input name="inspected_by"></div>
+                    <div><label>Work Performed By</label><input name="work_performed_by"></div>
+                    <div><label>Signature</label><input name="signature"></div>
+                    <div><label>Date</label><input type="date" name="signoff_date"></div>
                 </div>
             </div>
 
             <div class="center">
-                <button class="btn" type="submit">Submit SOP</button>
+                <button class="btn" type="submit">Submit</button>
             </div>
 
         </div>
     </form>
+
+    <script src="./js/part-handler.js" defer></script>
 </body>
 </html>
