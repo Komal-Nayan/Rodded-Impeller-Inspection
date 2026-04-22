@@ -1,0 +1,64 @@
+{
+  "UHTP60145WC2***": {
+    "description": "High Chrome Rodded Impeller – WC2",
+
+    "tolerance": {
+      "min": 46.0,
+      "max": 46.6
+    },
+
+    "vanes": 3,
+    "holesPerVane": 2,
+
+    "holeCenterOptions": [
+      "390",
+      "395"
+    ],
+
+    "rod": {
+      "partNo": "MK781340‑PGC813",
+      "count": 6,
+      "diameterMin": 45.0,
+      "diameterMax": 45.5,
+      "lengthMin": 378,
+      "lengthMax": 382
+    },
+
+    "plug": {
+      "partNo": "MK782670A05",
+      "count": 6
+    }
+  },
+
+  "ABC123XYZ": {
+    "description": "Test Impeller – 4 Vanes",
+
+    "tolerance": {
+      "min": 44.5,
+      "max": 45.2
+    },
+
+    "vanes": 4,
+    "holesPerVane": 3,
+
+    "holeCenterOptions": [
+      "N/A",
+      "390",
+      "395"
+    ],
+
+    "rod": {
+      "partNo": "MK700000‑TEST",
+      "count": 12,
+      "diameterMin": 44.0,
+      "diameterMax": 44.5,
+      "lengthMin": 398,
+      "lengthMax": 402
+    },
+
+    "plug": {
+      "partNo": "MK700001‑TEST",
+      "count": 12
+    }
+  }
+}
