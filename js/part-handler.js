@@ -139,4 +139,3 @@ function hideRow(row) {
   row.querySelectorAll("input, select")
     .forEach(el => el.value = "");
 }
-``
