@@ -1,6 +1,8 @@
 /* ============================================================
    Part Handler – WEIR SOP Digital Form
    ============================================================ */
+console.log("✅ part-handler.js loaded");
+alert("JS LOADED");
 
 let PART_MASTER = {};
 
