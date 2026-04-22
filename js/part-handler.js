@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 /* -------------------- LOAD PARTS JSON -------------------- */
 async function loadParts() {
-  const response = await fetch("./data/parts.json");
+  const response = await fetch("https://github.com/Komal-Nayan/Rodded-Impeller-Inspection/blob/main/data/data.json");
   PART_MASTER = await response.json();
 }
 
