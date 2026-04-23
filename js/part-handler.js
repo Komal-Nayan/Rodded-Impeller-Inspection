@@ -38,16 +38,18 @@ function populatePartDropdown() {
 function attachPartChangeHandler() {
   const partSelect = document.getElementById("partSelect");
 
-  partSelect.addEventListener("change", () => {
-    const part = PART_MASTER[partSelect.value];
+    partSelect.addEventListener("change", () => {
+        const part = PART_MASTER[partSelect.value];
 
-    if (!part) {
-      resetFormState();
-      return;
-    }
+        if (!part) {
+            resetFormState();
+            hidePartSections();
+            return;
+        }
 
-    applyPart(part);
-  });
+        showPartSections();
+        applyPart(part);
+    });
 }
 
 /* -------------------- APPLY PART DATA -------------------- */
