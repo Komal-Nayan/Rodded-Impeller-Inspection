@@ -36,12 +36,13 @@ function populatePartDropdown() {
 
 /* -------------------- PART CHANGE HANDLER -------------------- */
 function attachPartChangeHandler() {
-  const partSelect = document.getElementById("partSelect");
+    const partSelect = document.getElementById("partSelect");
 
     partSelect.addEventListener("change", () => {
-        const part = PART_MASTER[partSelect.value];
+        const partNo = partSelect.value;
+        const part = PART_MASTER[partNo];
 
-        if (!part) {
+        if (!partNo || !part) {
             resetFormState();
             hidePartSections();
             return;
@@ -146,10 +147,18 @@ function hideRow(row) {
 
 function showPartSections() {
     const section = document.getElementById("partDependentSections");
-    if (section) section.style.display = "";
+    if (!section) {
+        console.error("❌ partDependentSections not found");
+        return;
+    }
+    section.style.display = "";
 }
 
 function hidePartSections() {
     const section = document.getElementById("partDependentSections");
-    if (section) section.style.display = "none";
+    if (!section) {
+        console.error("❌ partDependentSections not found");
+        return;
+    }
+    section.style.display = "none";
 }
