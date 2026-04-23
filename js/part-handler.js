@@ -2,14 +2,14 @@
    Part Handler – WEIR SOP Digital Form
    ============================================================ */
 console.log("✅ part-handler.js loaded");
-alert("JS LOADED");
 
 let PART_MASTER = {};
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadParts();
-  populatePartDropdown();
-  attachPartChangeHandler();
+    hidePartSections();
+    await loadParts();
+    populatePartDropdown();
+    attachPartChangeHandler();
 });
 
 /* -------------------- LOAD PARTS JSON -------------------- */
@@ -140,4 +140,14 @@ function hideRow(row) {
   row.style.display = "none";
   row.querySelectorAll("input, select")
     .forEach(el => el.value = "");
+}
+
+function showPartSections() {
+    const section = document.getElementById("partDependentSections");
+    if (section) section.style.display = "";
+}
+
+function hidePartSections() {
+    const section = document.getElementById("partDependentSections");
+    if (section) section.style.display = "none";
 }
