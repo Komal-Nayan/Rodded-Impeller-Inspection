@@ -3,17 +3,143 @@
 <head>
     <meta charset="UTF-8" />
     <title>WEIR SOP – Digital Form</title>
-    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #6f76ff;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 6px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background: #eef1ff;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn {
+            background: #6f76ff;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background: #5c63e0;
+            }
+
+        .center {
+            text-align: center;
+        }
+
+        .logo-img {
+            height: 28px;
+            width: auto;
+            max-width: 160px;
+            object-fit: contain;
+        }
+
+        .image-container {
+            width: 100%;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .detail-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 320px;
+            object-fit: contain;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fafafa;
+        }
+    </style>
 </head>
 
 <body>
-    <form method="post">
+    <form id="sopForm" method="post">
         <div class="container">
 
             <!-- HEADER -->
             <div class="header">
                 <div class="logo">
-                    <img src="./images/FILLED_PNG_WHITE.png"
+                    <img src="https://raw.githubusercontent.com/Komal-Nayan/Rodded-Impeller-Inspection/d5ffd15608439612a7b18bc7ce520622456348dd/images/FILLED_PNG_WHITE.png"
                          alt="WEIR Logo"
                          class="logo-img" />
                 </div>
@@ -105,7 +231,7 @@
                 <div class="card">
                     <h3>Additional Details</h3>
                     <div class="image-container">
-                        <img src="./images/rodded impeller.png"
+                        <img src="https://raw.githubusercontent.com/Komal-Nayan/Rodded-Impeller-Inspection/d5ffd15608439612a7b18bc7ce520622456348dd/images/rodded%20impeller.png"
                              alt="Rodded Impeller Reference"
                              class="detail-img" />
                     </div>
@@ -116,7 +242,7 @@
                     <h3>Impeller Hole Dimensions</h3>
                     <p id="toleranceText"><b>Tolerance:</b> —</p>
 
-                    <table>
+                    <table id="holesTable">
                         <tr>
                             <th>Hole #</th>
                             <th>Top</th>
@@ -240,7 +366,7 @@
                         <b>Diameter:</b> — &nbsp;&nbsp;
                         <b>Length:</b> —
                     </p>
-                    <table>
+                    <table id="rodTable">
                         <tr>
                             <th>Rod #</th>
                             <th>Diameter (mm)</th>
@@ -307,8 +433,175 @@
             </div>
 
         </div>
-</form>
+    </form>
 
-    <script src="./js/part-handler.js" defer></script>
+    <script>
+        const PART_MASTER = {
+            "UHTP60145WC2***": {
+                "description": "High Chrome Rodded Impeller – WC2",
+
+                "tolerance": {
+                    "min": 46.0,
+                    "max": 46.6
+                },
+
+                "vanes": 3,
+                "holesPerVane": 2,
+
+                "holeCenterOptions": [
+                    "390",
+                    "395"
+                ],
+
+                "rod": {
+                    "partNo": "MK781340‑PGC813",
+                    "count": 6,
+                    "diameterMin": 45.0,
+                    "diameterMax": 45.5,
+                    "lengthMin": 378,
+                    "lengthMax": 382
+                },
+
+                "plug": {
+                    "partNo": "MK782670A05",
+                    "count": 6
+                }
+            },
+
+            "ABC123XYZ": {
+                "description": "Test Impeller – 4 Vanes",
+
+                "tolerance": {
+                    "min": 44.5,
+                    "max": 45.2
+                },
+
+                "vanes": 4,
+                "holesPerVane": 3,
+
+                "holeCenterOptions": [
+                    "N/A",
+                    "390",
+                    "395"
+                ],
+
+                "rod": {
+                    "partNo": "MK700000‑TEST",
+                    "count": 12,
+                    "diameterMin": 44.0,
+                    "diameterMax": 44.5,
+                    "lengthMin": 398,
+                    "lengthMax": 402
+                },
+
+                "plug": {
+                    "partNo": "MK700001‑TEST",
+                    "count": 12
+                }
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const partSelect = document.getElementById("partSelect");
+            Object.keys(PART_MASTER).forEach(p => {
+                const o = document.createElement("option");
+                o.value = p;
+                o.textContent = p;
+                partSelect.appendChild(o);
+            });
+
+            partSelect.addEventListener("change", () => applyPart(partSelect.value));
+        });
+
+        function applyPart(key) {
+            const part = PART_MASTER[key];
+            document.getElementById("partDependentSections").style.display = part ? "" : "none";
+            if (!part) return;
+
+            document.querySelector('[name="part_description"]').value = part.description;
+            document.getElementById("toleranceText").innerHTML =
+                `<b>Tolerance:</b> ${part.tolerance.min} – ${part.tolerance.max} mm`;
+
+            const holesTable = document.getElementById("holesTable");
+            holesTable.innerHTML = `
+<tr><th>Hole</th><th>Top</th><th>Mid</th><th>Bottom</th><th>Shim</th><th>Center</th></tr>`;
+
+            for (let v = 1; v <= part.vanes; v++) {
+                for (let h = 1; h <= part.holesPerVane; h++) {
+                    holesTable.innerHTML += `
+                            <tr>
+                            <td>${v}-${h}</td>
+                            <td><input name="hole_${v}_${h}_top"></td>
+                            <td><input name="hole_${v}_${h}_mid"></td>
+                            <td><input name="hole_${v}_${h}_bottom"></td>
+                            <td><input name="hole_${v}_${h}_shim"></td>
+                            <td><select name="hole_${v}_${h}_center">
+                            <option></option>${part.holeCenterOptions.map(c => `<option>${c}</option>`).join("")}
+                            </select></td>
+                            </tr>`;
+                }
+            }
+
+            const rodTable = document.getElementById("rodTable");
+            rodTable.innerHTML = `<tr><th>Rod</th><th>Dia</th><th>Length</th></tr>`;
+            for (let i = 1; i <= part.rod.count; i++) {
+                rodTable.innerHTML += `
+<tr>
+<td>${i}</td>
+<td><input name="rod_${i}_dia"></td>
+<td><input name="rod_${i}_len"></td>
+</tr>`;
+            }
+
+            document.getElementById("rodSummary").innerHTML =
+                `<b>Diameter:</b> ${part.rod.diameterMin}–${part.rod.diameterMax}
+         &nbsp;&nbsp; <b>Length:</b> ${part.rod.lengthMin}–${part.rod.lengthMax}`;
+        }
+
+        document.getElementById("sopForm").addEventListener("submit", e => {
+            e.preventDefault();
+            alert("✅ Form captured (ready for Power Automate hookup)");
+        });
+
+
+        document.getElementById("sopForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const payload = {};
+
+            formData.forEach((value, key) => {
+                payload[key] = value || "";
+            });
+
+            payload.submitted_at = new Date().toISOString();
+
+            try {
+                const response = await fetch(
+                    "https://defaultb771cb47279a4b84aaeb14a9b7a714.46.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a1659bffaef843d9bb1c1b9392e7d2ff/triggers/manual/paths/invoke?api-version=1",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+                if (!response.ok) throw new Error("HTTP error");
+
+                alert("✅ Record saved successfully");
+                form.reset();
+                document.getElementById("partDependentSections").style.display = "none";
+
+            } catch (err) {
+                console.error(err);
+                alert("❌ Failed to submit form");
+            }
+        });
+
+
+    </script>
 </body>
 </html>
