@@ -413,6 +413,33 @@
                         <tr class="plug-row" data-index="11"><td>11</td><td><input name="plug_11_thread"></td><td><input name="plug_11_rt"></td><td><input name="plug_11_len"></td><td><input name="plug_11_rp"></td></tr>
                         <tr class="plug-row" data-index="12"><td>12</td><td><input name="plug_12_thread"></td><td><input name="plug_12_rt"></td><td><input name="plug_12_len"></td><td><input name="plug_12_rp"></td></tr>
                     </table>
+                    <!-- THREAD FIT CHECK -->
+                    <div style="margin-top: 15px; max-width: 400px;">
+                        <label>Do the threads fit?</label>
+                        <select name="thread_fit" id="threadFitSelect">
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <!-- THREAD MEASUREMENTS (HIDDEN BY DEFAULT) -->
+                    <div id="threadMeasurements" style="display:none; margin-top: 12px;">
+                        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div>
+                                <label>Major Diameter</label>
+                                <input type="text" name="thread_major_dia">
+                            </div>
+                            <div>
+                                <label>Minor Diameter</label>
+                                <input type="text" name="thread_minor_dia">
+                            </div>
+                            <div>
+                                <label>Pitch Diameter</label>
+                                <input type="text" name="thread_pitch_dia">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SIGN OFF -->
@@ -523,8 +550,7 @@
                 `<b>Tolerance:</b> ${part.tolerance.min} – ${part.tolerance.max} mm`;
 
             const holesTable = document.getElementById("holesTable");
-            holesTable.innerHTML = `
-<tr><th>Hole</th><th>Top</th><th>Mid</th><th>Bottom</th><th>Shim</th><th>Center</th></tr>`;
+            holesTable.innerHTML = `<tr><th>Hole</th><th>Top</th><th>Mid</th><th>Bottom</th><th>Shim</th><th>Center</th></tr>`;
 
             for (let v = 1; v <= part.vanes; v++) {
                 for (let h = 1; h <= part.holesPerVane; h++) {
@@ -546,11 +572,11 @@
             rodTable.innerHTML = `<tr><th>Rod</th><th>Dia</th><th>Length</th></tr>`;
             for (let i = 1; i <= part.rod.count; i++) {
                 rodTable.innerHTML += `
-<tr>
-<td>${i}</td>
-<td><input name="rod_${i}_dia"></td>
-<td><input name="rod_${i}_len"></td>
-</tr>`;
+                                        <tr>
+                                        <td>${i}</td>
+                                        <td><input name="rod_${i}_dia"></td>
+                                        <td><input name="rod_${i}_len"></td>
+                                        </tr>`;
             }
 
             document.getElementById("rodSummary").innerHTML =
@@ -563,7 +589,24 @@
             alert("✅ Form captured (ready for Power Automate hookup)");
         });
 
+        // THREAD FIT DROPDOWN LOGIC
+        document.addEventListener("DOMContentLoaded", () => {
+            const fitSelect = document.getElementById("threadFitSelect");
+            const measurements = document.getElementById("threadMeasurements");
 
+            fitSelect.addEventListener("change", () => {
+                if (fitSelect.value === "No") {
+                    measurements.style.display = "";
+                } else {
+                    measurements.style.display = "none";
+
+                    // Optional: clear values if switching back to Yes
+                    measurements.querySelectorAll("input").forEach(i => i.value = "");
+                }
+            });
+        });
+
+        //SUBMISSION LOGIC
         document.getElementById("sopForm").addEventListener("submit", async (e) => {
             e.preventDefault();
 
