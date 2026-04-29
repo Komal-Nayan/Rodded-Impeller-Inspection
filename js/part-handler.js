@@ -1,48 +1,57 @@
 /* ============================================================
-   Part Handler – WEIR SOP Digital Form
+   part-handler.js – WEIR SOP Digital Form
    ============================================================ */
 console.log("✅ part-handler.js loaded");
 
 let PART_MASTER = {};
 
+/* ============================================================
+   INITIALIZATION
+   ============================================================ */
 document.addEventListener("DOMContentLoaded", async () => {
     hidePartSections();
     await loadParts();
     populatePartDropdown();
     attachPartChangeHandler();
+    attachThreadFitHandler();
+    attachSubmissionHandler();
 });
 
-/* -------------------- LOAD PARTS JSON -------------------- */
+/* ============================================================
+   LOAD PARTS FROM data.json
+   ============================================================ */
 async function loadParts() {
-  const response = await fetch("https://raw.githubusercontent.com/Komal-Nayan/Rodded-Impeller-Inspection/main/data/data.json");
-  PART_MASTER = await response.json();
+    const res = await fetch("data/data.json");
+    PART_MASTER = await res.json();
 }
 
-/* -------------------- POPULATE PART DROPDOWN -------------------- */
+/* ============================================================
+   POPULATE PART DROPDOWN
+   ============================================================ */
 function populatePartDropdown() {
-  const select = document.getElementById("partSelect");
+    const partSelect = document.getElementById("partSelect");
 
-  // Clear existing options except placeholder
-  select.querySelectorAll("option:not(:first-child)")
-    .forEach(opt => opt.remove());
+    partSelect.querySelectorAll("option:not(:first-child)")
+        .forEach(o => o.remove());
 
-  Object.keys(PART_MASTER).forEach(partNo => {
-    const opt = document.createElement("option");
-    opt.value = partNo;
-    opt.textContent = partNo;
-    select.appendChild(opt);
-  });
+    Object.keys(PART_MASTER).forEach(p => {
+        const o = document.createElement("option");
+        o.value = p;
+        o.textContent = p;
+        partSelect.appendChild(o);
+    });
 }
 
-/* -------------------- PART CHANGE HANDLER -------------------- */
+/* ============================================================
+   PART CHANGE HANDLER
+   ============================================================ */
 function attachPartChangeHandler() {
     const partSelect = document.getElementById("partSelect");
 
     partSelect.addEventListener("change", () => {
-        const partNo = partSelect.value;
-        const part = PART_MASTER[partNo];
+        const part = PART_MASTER[partSelect.value];
 
-        if (!partNo || !part) {
+        if (!part) {
             resetFormState();
             hidePartSections();
             return;
@@ -53,112 +62,155 @@ function attachPartChangeHandler() {
     });
 }
 
-/* -------------------- APPLY PART DATA -------------------- */
+/* ============================================================
+   APPLY PART DATA
+   ============================================================ */
 function applyPart(part) {
 
-  /* BASIC */
-  document.querySelector('input[name="part_description"]').value =
-    part.description;
+    /* ---------- BASIC ---------- */
+    document.querySelector('[name="part_description"]').value =
+        part.description;
 
-  document.getElementById("toleranceText").innerHTML =
-    `<b>Tolerance:</b> ${part.tolerance.min} – ${part.tolerance.max} mm`;
+    document.getElementById("toleranceText").innerHTML =
+        `<b>Tolerance:</b> ${part.tolerance.min} – ${part.tolerance.max} mm`;
 
-  /* HOLES */
-  document.querySelectorAll(".hole-row").forEach(row => {
-    const vane = Number(row.dataset.vane);
-    const holeIdx = Number(row.dataset.hole);
+    const totalCount = part.vanes * part.holesPerVane;
 
-    if (vane <= part.vanes && holeIdx <= part.holesPerVane) {
-      row.style.display = "";
+    /* ---------- HOLES ---------- */
+    document.querySelectorAll(".hole-row").forEach(row => {
+        const vane = Number(row.dataset.vane);
+        const hole = Number(row.dataset.hole);
 
-      const select = row.querySelector(".hole-center");
-      select.innerHTML = '<option value="">--</option>';
+        if (vane <= part.vanes && hole <= part.holesPerVane) {
+            row.style.display = "";
 
-      const centerValue = part.holeCenterOptions[holeIdx - 1];
-      if (centerValue) {
-        const opt = document.createElement("option");
-        opt.value = centerValue;
-        opt.textContent = centerValue;
-        select.appendChild(opt);
-      }
-    } else {
-      hideRow(row);
-    }
-  });
+            const center = row.querySelector(".hole-center");
+            center.innerHTML = '<option value=""></option>';
 
-  /* ROD SUMMARY */
-  const rodSummary = document.getElementById("rodSummary");
-  if (rodSummary && part.rod) {
-    rodSummary.innerHTML =
-      `<b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax} mm
-       &nbsp;&nbsp;
-       <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax} mm`;
-  }
+            part.holeCenterOptions.forEach(c => {
+                const opt = document.createElement("option");
+                opt.value = c;
+                opt.textContent = c;
+                center.appendChild(opt);
+            });
+        } else {
+            hideRow(row);
+        }
+    });
 
-  /* RODS */
-  document.querySelectorAll(".rod-row").forEach(row => {
-    const idx = Number(row.dataset.index);
+    /* ---------- RODS ---------- */
+    document.querySelectorAll(".rod-row").forEach(row => {
+        const idx = Number(row.dataset.index);
+        idx <= totalCount ? row.style.display = "" : hideRow(row);
+    });
 
-    if (idx <= part.rod.count) {
-      row.style.display = "";
+    document.getElementById("rodSummary").innerHTML =
+        `<b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax}
+         &nbsp;&nbsp;
+         <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax}`;
 
-      const dia = row.querySelector('input[name$="_dia"]');
-      const len = row.querySelector('input[name$="_len"]');
-
-      dia.placeholder =
-        `${part.rod.diameterMin} – ${part.rod.diameterMax}`;
-
-      len.placeholder =
-        `${part.rod.lengthMin} – ${part.rod.lengthMax}`;
-    } else {
-      hideRow(row);
-    }
-  });
-
-  /* PLUGS */
-  document.querySelectorAll(".plug-row").forEach(row => {
-    Number(row.dataset.index) <= part.plug.count
-      ? row.style.display = ""
-      : hideRow(row);
-  });
+    /* ---------- PLUGS ---------- */
+    document.querySelectorAll(".plug-row").forEach(row => {
+        const idx = Number(row.dataset.index);
+        idx <= totalCount ? row.style.display = "" : hideRow(row);
+    });
 }
 
-/* -------------------- RESET STATE -------------------- */
-function resetFormState() {
-  document.getElementById("toleranceText").innerHTML =
-    "<b>Tolerance:</b> —";
+/* ============================================================
+   THREAD FIT (YES / NO LOGIC)
+   ============================================================ */
+function attachThreadFitHandler() {
+    const fitSelect = document.getElementById("threadFitSelect");
+    const measurements = document.getElementById("threadMeasurements");
 
-  const rodSummary = document.getElementById("rodSummary");
-  if (rodSummary) {
-    rodSummary.innerHTML =
-      "<b>Diameter:</b> — &nbsp;&nbsp; <b>Length:</b> —";
-  }
+    if (!fitSelect || !measurements) return;
 
-  document.querySelectorAll(".hole-row, .rod-row, .plug-row")
-    .forEach(hideRow);
+    fitSelect.addEventListener("change", () => {
+        if (fitSelect.value === "No") {
+            measurements.style.display = "";
+        } else {
+            measurements.style.display = "none";
+            measurements.querySelectorAll("input")
+                .forEach(i => i.value = "");
+        }
+    });
 }
 
-/* -------------------- HELPERS -------------------- */
+/* ============================================================
+   FORM SUBMISSION (Power Automate)
+   ============================================================ */
+function attachSubmissionHandler() {
+    const form = document.getElementById("sopForm");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const payload = {};
+
+        formData.forEach((value, key) => {
+            payload[key] = value || "";
+        });
+
+        payload.submitted_at = new Date().toISOString();
+
+        try {
+            const response = await fetch(
+                "https://defaultb771cb47279a4b84aaeb14a9b7a714.46.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a1659bffaef843d9bb1c1b9392e7d2ff/triggers/manual/paths/invoke?api-version=1",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            if (!response.ok) throw new Error("HTTP error");
+
+            alert("✅ Record saved successfully");
+            form.reset();
+            resetFormState();
+            hidePartSections();
+
+        } catch (err) {
+            console.error(err);
+            alert("❌ Failed to submit form");
+        }
+    });
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
 function hideRow(row) {
-  row.style.display = "none";
-  row.querySelectorAll("input, select")
-    .forEach(el => el.value = "");
+    row.style.display = "none";
+    row.querySelectorAll("input, select")
+        .forEach(el => el.value = "");
+}
+
+function resetFormState() {
+    document.getElementById("toleranceText").innerHTML =
+        "<b>Tolerance:</b> —";
+
+    document.getElementById("rodSummary").innerHTML =
+        "<b>Diameter:</b> — &nbsp;&nbsp; <b>Length:</b> —";
+
+    document.querySelectorAll(".hole-row, .rod-row, .plug-row")
+        .forEach(hideRow);
+
+    const measurements = document.getElementById("threadMeasurements");
+    if (measurements) {
+        measurements.style.display = "none";
+        measurements.querySelectorAll("input")
+            .forEach(i => i.value = "");
+    }
 }
 
 function showPartSections() {
     const section = document.getElementById("partDependentSections");
-    if (!section) {
-        console.error("❌ partDependentSections not found");
-        return;
-    }
-    section.style.display = "";
+    if (section) section.style.display = "";
 }
 
 function hidePartSections() {
     const section = document.getElementById("partDependentSections");
-    if (!section) {
-        console.error("❌ partDependentSections not found");
-        return;
-    }
-    section.style.display = "none";
+    if (section) section.style.display = "none";
 }
