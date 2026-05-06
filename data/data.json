@@ -30,38 +30,6 @@
     }
   },
 
-  "ABC123XYZ": {
-    "description": "Test Impeller – 4 Vanes",
-
-    "tolerance": {
-      "min": 44.5,
-      "max": 45.2
-    },
-
-    "vanes": 4,
-    "holesPerVane": 3,
-
-    "holeCenterOptions": [
-      "N/A",
-      "390",
-      "395"
-    ],
-
-    "rod": {
-      "partNo": "MK700000‑TEST",
-      "count": 12,
-      "diameterMin": 44.0,
-      "diameterMax": 44.5,
-      "lengthMin": 398,
-      "lengthMax": 402
-    },
-
-    "plug": {
-      "partNo": "MK700001‑TEST",
-      "count": 12
-    }
-  },
-
   "UHTP50145-0001***": {
     "description": "High Chrome Rodded Impeller – 0001",
 
