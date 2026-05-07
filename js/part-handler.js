@@ -3,6 +3,9 @@
    ============================================================ */
 console.log("✅ part-handler.js loaded");
 
+const SOP_DRAFT_KEY = "weir_sop_draft";
+let isRestoringDraft = false;
+
 let PART_MASTER = {};
 
 /* ============================================================
@@ -15,6 +18,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachPartChangeHandler();
     attachThreadFitHandler();
     attachSubmissionHandler();
+
+    restoreDraftIfExists();
+    enableDraftAutoSave();
+
 });
 
 /* ============================================================
@@ -137,6 +144,57 @@ function attachThreadFitHandler() {
 }
 
 /* ============================================================
+   DRAFT AUTO-SAVE
+   ============================================================ */
+function enableDraftAutoSave() {
+    const form = document.getElementById("sopForm");
+    if (!form) return;
+
+    form.addEventListener("input", () => {
+        if (isRestoringDraft) return;
+
+        const data = {};
+        new FormData(form).forEach((v, k) => {
+            data[k] = v;
+        });
+        localStorage.setItem(SOP_DRAFT_KEY, JSON.stringify(data));
+    });
+}
+
+/* ============================================================
+   RELOAD SAVED DRAFT
+   ============================================================ */
+function restoreDraftIfExists() {
+    const saved = localStorage.getItem(SOP_DRAFT_KEY);
+    if (!saved) return;
+
+    if (!confirm("An unfinished SOP draft was found. Restore it?")) return;
+
+    isRestoringDraft = true;
+
+    const data = JSON.parse(saved);
+
+    Object.entries(data).forEach(([key, value]) => {
+        if (!value) return;
+        const field = document.querySelector(`[name="${key}"]`);
+        if (field) field.value = value;
+    });
+
+    if (data.part_no) {
+        const partSelect = document.getElementById("partSelect");
+        if (partSelect) {
+            partSelect.value = data.part_no;
+            partSelect.dispatchEvent(new Event("change"));
+        }
+    }
+
+    // Allow autosave again AFTER restore
+    setTimeout(() => {
+        isRestoringDraft = false;
+    }, 0);
+}
+
+/* ============================================================
    FORM SUBMISSION (Power Automate)
    ============================================================ */
 function attachSubmissionHandler() {
@@ -167,6 +225,8 @@ function attachSubmissionHandler() {
             if (!response.ok) throw new Error("HTTP error");
 
             alert("✅ Record saved successfully");
+            //Clear draft after submission
+            localStorage.removeItem(SOP_DRAFT_KEY);
             form.reset();
             resetFormState();
             hidePartSections();
