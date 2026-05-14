@@ -1,6 +1,3 @@
-/* ============================================================
-   part-handler.js – WEIR SOP Digital Form
-   ============================================================ */
 console.log("✅ part-handler.js loaded");
 
 const SOP_DRAFT_KEY = "weir_sop_draft";
@@ -18,14 +15,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachPartChangeHandler();
     attachThreadFitHandler();
     attachSubmissionHandler();
+    attachDimensionModeHandler(); 
 
     restoreDraftIfExists();
     enableDraftAutoSave();
-
 });
 
 /* ============================================================
-   LOAD PARTS FROM data.json
+   LOAD PARTS
    ============================================================ */
 async function loadParts() {
     const res = await fetch("data/data.json");
@@ -61,20 +58,62 @@ function attachPartChangeHandler() {
         if (!part) {
             resetFormState();
             hidePartSections();
-            return;
+        } else {
+            showPartSections();
+            applyPart(part);
         }
 
-        showPartSections();
-        applyPart(part);
+        updateConditionalVisibility(); // ✅ KEY
     });
+}
+
+/* ============================================================
+   DIMENSION MODE HANDLER
+   ============================================================ */
+function attachDimensionModeHandler() {
+    const select = document.getElementById("dimensionModeSelect");
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        updateConditionalVisibility();
+    });
+}
+
+/* ============================================================
+   CONDITIONAL VISIBILITY (CORE LOGIC)
+   ============================================================ */
+function updateConditionalVisibility() {
+    const partSelect = document.getElementById("partSelect");
+    const modeSelect = document.getElementById("dimensionModeSelect");
+
+    const checklist = document.getElementById("checklistSection");
+    const postSections = document.getElementById("postChecklistSections");
+
+    if (!partSelect || !modeSelect || !checklist || !postSections) return;
+
+    const hasPart = !!partSelect.value;
+    const hasMode = !!modeSelect.value;
+
+    if (hasPart && hasMode) {
+
+        if (modeSelect.value === "As Found") {
+            checklist.style.display = "none";
+            postSections.style.display = "";
+        } else {
+            checklist.style.display = "";
+            postSections.style.display = "";
+        }
+
+    } else {
+        checklist.style.display = "none";
+        postSections.style.display = "none";
+    }
 }
 
 /* ============================================================
    APPLY PART DATA
    ============================================================ */
 function applyPart(part) {
-
-    /* ---------- BASIC ---------- */
     document.querySelector('[name="part_description"]').value =
         part.description;
 
@@ -83,7 +122,6 @@ function applyPart(part) {
 
     const totalCount = part.vanes * part.holesPerVane;
 
-    /* ---------- HOLES ---------- */
     document.querySelectorAll(".hole-row").forEach(row => {
         const vane = Number(row.dataset.vane);
         const hole = Number(row.dataset.hole);
@@ -105,26 +143,14 @@ function applyPart(part) {
         }
     });
 
-    /* ---------- RODS ---------- */
     document.querySelectorAll(".rod-row").forEach(row => {
-        const idx = Number(row.dataset.index);
-        idx <= totalCount ? row.style.display = "" : hideRow(row);
-    });
-
-    document.getElementById("rodSummary").innerHTML =
-        `<b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax}
-         &nbsp;&nbsp;
-         <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax}`;
-
-    /* ---------- PLUGS ---------- */
-    document.querySelectorAll(".plug-row").forEach(row => {
         const idx = Number(row.dataset.index);
         idx <= totalCount ? row.style.display = "" : hideRow(row);
     });
 }
 
 /* ============================================================
-   THREAD FIT (YES / NO LOGIC)
+   THREAD FIT
    ============================================================ */
 function attachThreadFitHandler() {
     const fitSelect = document.getElementById("threadFitSelect");
@@ -144,7 +170,7 @@ function attachThreadFitHandler() {
 }
 
 /* ============================================================
-   DRAFT AUTO-SAVE
+   DRAFT SAVE
    ============================================================ */
 function enableDraftAutoSave() {
     const form = document.getElementById("sopForm");
@@ -154,15 +180,13 @@ function enableDraftAutoSave() {
         if (isRestoringDraft) return;
 
         const data = {};
-        new FormData(form).forEach((v, k) => {
-            data[k] = v;
-        });
+        new FormData(form).forEach((v, k) => data[k] = v);
         localStorage.setItem(SOP_DRAFT_KEY, JSON.stringify(data));
     });
 }
 
 /* ============================================================
-   RELOAD SAVED DRAFT
+   RESTORE DRAFT
    ============================================================ */
 function restoreDraftIfExists() {
     const saved = localStorage.getItem(SOP_DRAFT_KEY);
@@ -188,14 +212,15 @@ function restoreDraftIfExists() {
         }
     }
 
-    // Allow autosave again AFTER restore
+    updateConditionalVisibility(); // ✅ IMPORTANT
+
     setTimeout(() => {
         isRestoringDraft = false;
     }, 0);
 }
 
 /* ============================================================
-   FORM SUBMISSION (Power Automate)
+   SUBMIT
    ============================================================ */
 function attachSubmissionHandler() {
     const form = document.getElementById("sopForm");
@@ -203,36 +228,28 @@ function attachSubmissionHandler() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const formData = new FormData(form);
         const payload = {};
-
-        formData.forEach((value, key) => {
-            payload[key] = value || "";
-        });
-
+        new FormData(form).forEach((v, k) => payload[k] = v || "");
         payload.submitted_at = new Date().toISOString();
 
         try {
-            const response = await fetch(
-                "https://defaultb771cb47279a4b84aaeb14a9b7a714.46.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a1659bffaef843d9bb1c1b9392e7d2ff/triggers/manual/paths/invoke?api-version=1",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                }
-            );
+            const response = await fetch("YOUR_FLOW_URL", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
 
-            if (!response.ok) throw new Error("HTTP error");
+            if (!response.ok) throw new Error();
 
             alert("✅ Record saved successfully");
-            //Clear draft after submission
+
             localStorage.removeItem(SOP_DRAFT_KEY);
             form.reset();
             resetFormState();
             hidePartSections();
+            updateConditionalVisibility();
 
-        } catch (err) {
-            console.error(err);
+        } catch {
             alert("❌ Failed to submit form");
         }
     });
@@ -251,26 +268,14 @@ function resetFormState() {
     document.getElementById("toleranceText").innerHTML =
         "<b>Tolerance:</b> —";
 
-    document.getElementById("rodSummary").innerHTML =
-        "<b>Diameter:</b> — &nbsp;&nbsp; <b>Length:</b> —";
-
     document.querySelectorAll(".hole-row, .rod-row, .plug-row")
         .forEach(hideRow);
-
-    const measurements = document.getElementById("threadMeasurements");
-    if (measurements) {
-        measurements.style.display = "none";
-        measurements.querySelectorAll("input")
-            .forEach(i => i.value = "");
-    }
 }
 
 function showPartSections() {
-    const section = document.getElementById("partDependentSections");
-    if (section) section.style.display = "";
+    document.getElementById("partDependentSections").style.display = "";
 }
 
 function hidePartSections() {
-    const section = document.getElementById("partDependentSections");
-    if (section) section.style.display = "none";
+    document.getElementById("partDependentSections").style.display = "none";
 }
