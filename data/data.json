@@ -1,35 +1,4 @@
 {
-  "UHTP60145WC2***": {
-    "description": "High Chrome Rodded Impeller – WC2",
-
-    "tolerance": {
-      "min": 46.0,
-      "max": 46.6
-    },
-
-    "vanes": 3,
-    "holesPerVane": 2,
-
-    "holeCenterOptions": [
-      "390",
-      "395"
-    ],
-
-    "rod": {
-      "partNo": "MK781340‑PGC813",
-      "count": 6,
-      "diameterMin": 45.0,
-      "diameterMax": 45.5,
-      "lengthMin": 378,
-      "lengthMax": 382
-    },
-
-    "plug": {
-      "partNo": "MK782670A05",
-      "count": 6
-    }
-  },
-
   "UHTP50145-0001***": {
     "description": "High Chrome Rodded Impeller – 0001",
 
