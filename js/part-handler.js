@@ -143,12 +143,23 @@ function applyPart(part) {
         } else {
             hideRow(row);
         }
+
+
     });
 
     document.querySelectorAll(".rod-row").forEach(row => {
         const idx = Number(row.dataset.index);
         idx <= totalCount ? row.style.display = "" : hideRow(row);
     });
+
+    const rodSummary = document.getElementById("rodSummary");
+
+    if (rodSummary && part.rod) {
+        rodSummary.innerHTML = `
+        <b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax} mm&nbsp;&nbsp;
+        <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax} mm
+    `;
+    }
 }
 
 /* ============================================================
