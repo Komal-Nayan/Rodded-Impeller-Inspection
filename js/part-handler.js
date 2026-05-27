@@ -129,6 +129,8 @@ function applyPart(part) {
         if (vane <= part.vanes && hole <= part.holesPerVane) {
             row.style.display = "";
 
+            /* DROPDOWN NOT NEEDED
+            
             const center = row.querySelector(".hole-center");
             center.innerHTML = '<option value=""></option>';
 
@@ -137,7 +139,7 @@ function applyPart(part) {
                 opt.value = c;
                 opt.textContent = c;
                 center.appendChild(opt);
-            });
+            });*/
         } else {
             hideRow(row);
         }
