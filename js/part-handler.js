@@ -118,8 +118,8 @@ function applyPart(part) {
         part.description;
 
     document.getElementById("toleranceText").innerHTML =
-        `<b>Tolerance (Top, Middle &Aacute; Bottom):</b> ${part.tolerance.min} – ${part.tolerance.max} mm&nbsp;&nbsp;
-        <b> Hole Tolerance:</b> `;
+        `<b>Tolerance (Top, Middle and Bottom):</b> ${part.tolerance.min} – ${part.tolerance.max} mm&nbsp;&nbsp;
+        <b> Hole Center Tolerance:</b> `;
 
     const totalCount = part.vanes * part.holesPerVane;
 
