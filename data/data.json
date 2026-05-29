@@ -10,11 +10,13 @@
     "vanes": 4,
     "holesPerVane": 3,
 
-    "holeCenterOptions": [
-      "358",
-      "358",
-      "358"
-    ],
+    "holeCenterOptions": {
+      "depth": 358,
+      "tolerance": {
+        "min": 355.8,
+        "max": 360.2
+      }
+    },
 
     "rod": {
       "partNo": "MK781340-EGC813",
