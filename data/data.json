@@ -10,7 +10,23 @@
     "vanes": 4,
     "holesPerVane": 3,
 
-    "holeCenterOptions": {
+    "holeCenter1": {
+      "depth": 358,
+      "tolerance": {
+        "min": 355.8,
+        "max": 360.2
+      }
+    },
+
+    "holeCenter2": {
+      "depth": 358,
+      "tolerance": {
+        "min": 355.8,
+        "max": 360.2
+      }
+    },
+
+    "holeCenter3": {
       "depth": 358,
       "tolerance": {
         "min": 355.8,
@@ -19,7 +35,7 @@
     },
 
     "rod": {
-      "partNo": "MK781340-EGC813",
+      "partNo": "MK781340-E****",
       "count": 12,
       "diameterMin": 33.3,
       "diameterMax": 33.7,
@@ -29,7 +45,113 @@
 
     "plug": {
       "partNo": "MK782670***",
+      "plugThreadLength": 85,
+      "plugLength": 112,
       "count": 12
+    }
+  },
+
+  "700230016W1***": {
+    "description": "Warman on the Inside 'TBC 54 HP' 2 rod impeller",
+
+    "tolerance": {
+      "min": 34.2,
+      "max": 34.8
+    },
+
+    "vanes": 4,
+    "holesPerVane": 2,
+
+    "holeCenter1": {
+      "depth": 268,
+      "tolerance": {
+        "min": 265.8,
+        "max": 270.2
+      }
+    },
+
+    "holeCenter2": {
+      "depth": 264.5,
+      "tolerance": {
+        "min": 262.3,
+        "max": 266.7
+      }
+    },
+
+    "holeCenter3": {
+      "depth": 358,
+      "tolerance": {
+        "min": 355.8,
+        "max": 360.2
+      }
+    },
+
+    "rod": {
+      "partNo": "MK781340-S****",
+      "count": 8,
+      "diameterMin": 33.3,
+      "diameterMax": 33.7,
+      "lengthMin": 227,
+      "lengthMax": 233
+    },
+
+    "plug": {
+      "partNo": "MK782670***",
+      "plugThreadLength": 85,
+      "plugLength": 112,
+      "count": 8
+    }
+  },
+
+  "UL65145TV1WC2***": {
+    "description": "650 L - TV1 - 3 Rod",
+
+    "tolerance": {
+      "min": 34.2,
+      "max": 34.8
+    },
+
+    "vanes": 4,
+    "holesPerVane": 3,
+
+    "holeCenter1": {
+      "depth": 420,
+      "tolerance": {
+        "min": 417.5,
+        "max": 422.5
+      }
+    },
+
+    "holeCenter2": {
+      "depth": 264.5,
+      "tolerance": {
+        "min": 262.3,
+        "max": 266.7
+      }
+    },
+
+    "holeCenter3": {
+      "depth": 427,
+      "tolerance": {
+        "min": 424.5,
+        "max": 429.5
+      }
+    },
+
+    "rod": {
+      "partNo": "MK781340-L****",
+      "count": 12,
+      "diameterMin": 33.3,
+      "diameterMax": 33.7,
+      "lengthMin": 357,
+      "lengthMax": 363
+    },
+
+    "plug": {
+      "partNo": "MK782670***",
+      "plugThreadLength": 85,
+      "plugLength": 112,
+      "count": 8
     }
   }
 
