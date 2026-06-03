@@ -150,7 +150,7 @@ function applyPart(part) {
                 const max = centerConfig.tolerance.max;
 
                 // Set placeholder
-                centerInput.placeholder = `${min} - ${max}`;
+                centerInput.placeholder = `Tol. : ${min} - ${max} mm`;
 
             }
 
