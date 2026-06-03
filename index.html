@@ -281,9 +281,9 @@
                         <table>
                             <tr>
                                 <th>No.</th>
-                                <th>Plug Thread Length (85 mm)</th>
+                                <th id="plugThreadLength">Plug Thread Length</th>
                                 <th>Rod + Plug Thread</th>
-                                <th>Plug Length (112 mm)</th>
+                                <th id="plugLength">Plug Length</th>
                                 <th>Rod + Plug</th>
                             </tr>
 
@@ -303,7 +303,7 @@
                         </table>
                         <!-- THREAD FIT CHECK -->
                         <div style="margin-top: 15px; max-width: 400px;">
-                            <label>Do the threads fit?</label>
+                            <label>Do the threads fit?  <span style="color: red;">*</span></label>
                             <select name="thread_fit" id="threadFitSelect">
                                 <option value="">-- Select --</option>
                                 <option value="Yes">Yes</option>
