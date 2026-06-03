@@ -114,53 +114,96 @@ function updateConditionalVisibility() {
    APPLY PART DATA
    ============================================================ */
 function applyPart(part) {
-    document.querySelector('[name="part_description"]').value =
-        part.description;
+    // Set part description
+    const descField = document.querySelector('[name="part_description"]');
+    if (descField) descField.value = part.description || "";
 
-    document.getElementById("toleranceText").innerHTML =
-        `<b>Tolerance (Top, Middle and Bottom):</b> ${part.tolerance.min} – ${part.tolerance.max} mm&nbsp;&nbsp;
-        <b> Hole Center Tolerance:</b> ${part.holeCenterOptions.tolerance.min} – ${part.holeCenterOptions.tolerance.max} mm`;
+    // Set tolerance header
+    const toleranceText = document.getElementById("toleranceText");
+    if (toleranceText) {
+        toleranceText.innerHTML = `
+            <b>Tolerance (Top, Middle and Bottom):</b> ${part.tolerance.min} – ${part.tolerance.max} mm&nbsp;&nbsp;
+            <b>Hole Center Tolerance:</b> Refer individual holes
+        `;
+    }
 
+    // Total hole count
     const totalCount = part.vanes * part.holesPerVane;
 
+    // ============================================================
+    // HOLE TABLE HANDLING
+    // ============================================================
     document.querySelectorAll(".hole-row").forEach(row => {
         const vane = Number(row.dataset.vane);
         const hole = Number(row.dataset.hole);
 
+        const centerInput = row.querySelector(".hole-center");
+
         if (vane <= part.vanes && hole <= part.holesPerVane) {
             row.style.display = "";
 
-            /* DROPDOWN NOT NEEDED
-            
-            const center = row.querySelector(".hole-center");
-            center.innerHTML = '<option value=""></option>';
+            // Get correct holeCenter config dynamically
+            const centerConfig = part[`holeCenter${hole}`];
 
-            part.holeCenterOptions.forEach(c => {
-                const opt = document.createElement("option");
-                opt.value = c;
-                opt.textContent = c;
-                center.appendChild(opt);
-            });*/
+            if (centerConfig && centerInput) {
+                const min = centerConfig.tolerance.min;
+                const max = centerConfig.tolerance.max;
+
+                // Set placeholder
+                centerInput.placeholder = `${min} - ${max}`;
+
+            }
+
         } else {
             hideRow(row);
         }
-
-
     });
 
+    // ============================================================
+    // ROD TABLE HANDLING
+    // ============================================================
     document.querySelectorAll(".rod-row").forEach(row => {
         const idx = Number(row.dataset.index);
-        idx <= totalCount ? row.style.display = "" : hideRow(row);
+
+        if (idx <= totalCount) {
+            row.style.display = "";
+        } else {
+            hideRow(row);
+        }
     });
 
+    // Rod Summary
     const rodSummary = document.getElementById("rodSummary");
 
     if (rodSummary && part.rod) {
         rodSummary.innerHTML = `
-        <b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax} mm&nbsp;&nbsp;
-        <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax} mm
-    `;
+            <b>Diameter:</b> ${part.rod.diameterMin} – ${part.rod.diameterMax} mm&nbsp;&nbsp;
+            <b>Length:</b> ${part.rod.lengthMin} – ${part.rod.lengthMax} mm
+        `;
     }
+
+    // ============================================================
+    // PLUG TABLE HANDLING (based on count)
+    // ============================================================
+    if (part.plug?.count) {
+        document.querySelectorAll(".plug-row").forEach(row => {
+            const idx = Number(row.dataset.index);
+
+            if (idx <= part.plug.count) {
+                row.style.display = "";
+            } else {
+                hideRow(row);
+            }
+        });
+    }
+
+    //Set Nominal Plug and Plug Thread Lengths
+    const plugLength = document.getElementById("plugLength");
+    const plugThreadLength = document.getElementById("plugThreadLength");
+
+    plugThreadLength.innerHTML = `<b>Plug Thread Length</b> (${part.plug.plugThreadLength} mm)`
+    plugLength.innerHTML = `<b>Plug Length</b> (${part.plug.plugLength} mm)`
+    
 }
 
 /* ============================================================
@@ -274,8 +317,14 @@ function attachSubmissionHandler() {
    ============================================================ */
 function hideRow(row) {
     row.style.display = "none";
-    row.querySelectorAll("input, select")
-        .forEach(el => el.value = "");
+
+    row.querySelectorAll("input, select").forEach(el => {
+        el.value = "";
+
+        if (el.classList.contains("hole-center")) {
+            el.placeholder = "";
+        }
+    });
 }
 
 function resetFormState() {
